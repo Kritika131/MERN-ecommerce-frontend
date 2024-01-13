@@ -8,11 +8,11 @@ import {
   PlusIcon,
   Squares2X2Icon,
 } from "@heroicons/react/20/solid";
-import Pagination from "./components/Pagination";
+import Pagination from "../../productList/components/Pagination";
 import { Link } from "react-router-dom";
 import {useDispatch, useSelector} from 'react-redux'
-import { fetchAllProductsAsync, fetchBrandsAsync, fetchCategoriessAsync, fetchProductsByFiltersAsync, selectAllCategories, selectAllProducts, selectBrands } from "./productListSlice";
-import { ITEMS_PER_PAGE, discountedPrice } from "../../app/constants";
+import { fetchAllProductsAsync, fetchBrandsAsync, fetchCategoriessAsync, fetchProductsByFiltersAsync, selectAllCategories, selectAllProducts, selectBrands } from "../../productList/productListSlice";
+import { ITEMS_PER_PAGE, discountedPrice } from "../../../app/constants";
 
 const sortOptions = [
  
@@ -34,43 +34,9 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-// const old_products = [
-//   {
-//     id: 1,
-//     name: "Basic Tee",
-//     href: "#",
-//     imageSrc:
-//       "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: "$35",
-//     color: "Black",
-//   },
-//   {
-//     id: 2,
-//     name: "Basic Tee",
-//     href: "#",
-//     imageSrc:
-//       "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: "$35",
-//     color: "Black",
-//   },
-//   {
-//     id: 3,
-//     name: "Basic Tee",
-//     href: "#",
-//     imageSrc:
-//       "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: "$35",
-//     color: "Black",
-//   },
-  
-//   // More products...
-// ];
 
 
-const ProductList = () => {
+const AdminProductList = () => {
 
   const products = useSelector(selectAllProducts)
   const brands = useSelector(selectBrands)
@@ -234,7 +200,14 @@ const handleSort=(e,option)=>{
                 <DesktopFilter handleFilter={handleFilter} filters={filters}/>
 
                 {/* Product grid */}
+                        <div className="lg:col-span-3">
+                <div>
+                               <Link to="admin/product-form" className="rounded-md bg-green-600 px-3 mx-10 py-2 text-sm font-semibold text-white my-2">Add New Product</Link>
+
+                          </div>
+
               <ProductGrid products={products}/>
+                          </div>
               </div>
             </section>
           </main>
@@ -444,6 +417,7 @@ function ProductGrid({products}){
                     
                       <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
                         {products.map((product) => (
+                          <div>
                           <Link to={`/product-detail/${product.id}`} key = {product.id}>
 
                           <div key={product.id} className="group relative border-2 border-gray-400 p-2">
@@ -482,19 +456,22 @@ function ProductGrid({products}){
                                 ${product.price}
                               </p>
                               </div>
+                              
+
                             </div>
-                            {product.deleted && (
-                              <div>
-                                <p className="text-sm text-red-400"> product deleted</p>
-                              </div>
-                            )}
-                            {product.stock<=0  && (
-                              <div>
-                                <p className="text-sm text-red-400"> out of stock</p>
-                              </div>
-                            )}
+                            {product.deleted && 
+                            
+                            <div>
+                              <p className="text-sm text-red-600">product Deleted </p>
+                            </div>
+                            }
                           </div>
                           </Link> 
+                          <div className="mt-4">
+                               <Link to={`/admin/product-form/edit/${product.id}`} className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white my-2">Edit Product</Link>
+
+                          </div>
+                        </div>
                         ))}
                       </div>
                     </div>
@@ -503,4 +480,4 @@ function ProductGrid({products}){
   )
 }
 
-export default ProductList;
+export default AdminProductList;

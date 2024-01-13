@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { StarIcon } from '@heroicons/react/20/solid'
 import { RadioGroup } from '@headlessui/react'
-import Navbar from '../features/navbar/Navbar'
-import { fetchProductByIdAsync, selectProductById } from '../features/productList/productListSlice';
+import Navbar from '../../navbar/Navbar'
+import { fetchProductByIdAsync, selectProductById } from '../../productList/productListSlice';
 import {useDispatch, useSelector} from 'react-redux'
 import {useParams} from 'react-router-dom'
-import { addToCartAsync, selectCartItem } from '../features/cart/cartSlice';
-import { selectLoggedInUser } from '../features/auth/authSlice';
+import { addToCartAsync } from '../../cart/cartSlice';
+import { selectLoggedInUser } from '../../auth/authSlice';
 
 const colors= [
   { name: 'White', class: 'bg-white', selectedClass: 'ring-gray-400' },
@@ -68,7 +68,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function ProductDetail() {
+export default function AdminProductDetails() {
   const [selectedColor, setSelectedColor] = useState(colors[0])
   const [selectedSize, setSelectedSize] = useState(sizes[2])
   //TODO : In server date we will add colors, sizes,highlights.etc.
@@ -77,18 +77,12 @@ export default function ProductDetail() {
   const dispatch = useDispatch()
   const user = useSelector(selectLoggedInUser)
   const params = useParams()
-  const cartItems = useSelector(selectCartItem)
 
   const handleCart=(e)=>{
     e.preventDefault()
-    if(cartItems.findIndex(item=>item.productId===product.id)<=0){
-      
-      const newItem = {...product,productId:product.id,quantity:1,user:user.id}
-      delete newItem['id'];
-      dispatch(addToCartAsync(newItem))
-    } else {
-      console.log("already added");
-    }
+    const newItem = {...product,quantity:1,user:user.id}
+    delete newItem['id'];
+    dispatch(addToCartAsync(newItem))
   }
 
   useEffect(()=>{
