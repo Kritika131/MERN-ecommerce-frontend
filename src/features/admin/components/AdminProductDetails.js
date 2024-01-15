@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {useParams} from 'react-router-dom'
 import { addToCartAsync } from '../../cart/cartSlice';
 import { selectLoggedInUser } from '../../auth/authSlice';
+import { selectfetchloggedInUser } from '../../user/userSlice';
 
 const colors= [
   { name: 'White', class: 'bg-white', selectedClass: 'ring-gray-400' },
@@ -75,7 +76,7 @@ export default function AdminProductDetails() {
 
   const product = useSelector(selectProductById)
   const dispatch = useDispatch()
-  const user = useSelector(selectLoggedInUser)
+  const user = useSelector(selectfetchloggedInUser)
   const params = useParams()
 
   const handleCart=(e)=>{

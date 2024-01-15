@@ -1,5 +1,6 @@
 export const ITEMS_PER_PAGE = 10
 
 export function discountedPrice(item){
-  return Math.round(item.price(1-item.discountPercentage/100),2)
+  // console.log("item product ",item.price);
+  return Math.round(item.price*(1-item.discountPercentage/100),2)
 }

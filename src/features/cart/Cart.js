@@ -5,6 +5,7 @@ import { Link ,Navigate} from 'react-router-dom'
 import Navbar from "../navbar/Navbar"
 import { deleteCartItemsAsync, selectCartItem, updateCartItemsAsync } from './cartSlice'
 import {useDispatch, useSelector} from 'react-redux'
+import { discountedPrice } from '../../app/constants'
 
 
 
@@ -14,11 +15,11 @@ export default function Cart() {
   const items = useSelector(selectCartItem)
   const dispatch = useDispatch()
 
-  const totalAmount = items.reduce((amount,item)=>item.price*item.quantity+amount,0)
+  const totalAmount = items.reduce((amount,item)=>discountedPrice(item.product.price)*item.quantity+amount,0)
   const totalItems = items.reduce((total,item)=>item.quantity+ total,0)
 
   const handleQuantity=(e,item)=>{
-    dispatch(updateCartItemsAsync({...item,quantity:+e.target.value}))
+    dispatch(updateCartItemsAsync({id:item.id,quantity:+e.target.value}))
   }
 
   const handleRemove=(e,itemId)=>{
@@ -37,8 +38,8 @@ export default function Cart() {
                               <li key={item.id} className="flex py-6">
                                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                   <img
-                                    src={item.thumbnail}
-                                    alt={item.title}
+                                    src={item.product.thumbnail}
+                                    alt={item.product.title}
                                     className="h-full w-full object-cover object-center"
                                   />
                                 </div>
@@ -47,11 +48,11 @@ export default function Cart() {
                                   <div>
                                     <div className="flex justify-between text-base font-medium text-gray-900">
                                       <h3>
-                                        <a href={item.thumbnail}>{item.title}</a>
+                                        <a href={item.product.thumbnail}>{item.product.title}</a>
                                       </h3>
-                                      <p className="ml-4">{item.price}</p>
+                                      <p className="ml-4">{item.product.price}</p>
                                     </div>
-                                    <p className="mt-1 text-sm text-gray-500">{item.brand}</p>
+                                    <p className="mt-1 text-sm text-gray-500">{item.product.brand}</p>
                                   </div>
                                   <div className="flex flex-1 items-end justify-between text-sm">
                                     <div className="text-gray-500">
@@ -64,6 +65,7 @@ export default function Cart() {
                                     
                                      {/* {product.quantity} */}
                                      </div>
+                                     
 
                                     <div className="flex">
                                       <button

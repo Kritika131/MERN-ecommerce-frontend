@@ -2401,6 +2401,7 @@
   
     {
       "email": "sdjk@gmail.com",
+      "role":"admin",
       "password": "Qwerty123",
       "addresses": [],
       "id": 12

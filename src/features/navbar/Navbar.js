@@ -6,7 +6,8 @@ import { Bars3Icon, ShoppingCartIcon, XMarkIcon } from '@heroicons/react/24/outl
 import { Link } from 'react-router-dom'
 import { selectCartItem } from '../cart/cartSlice'
 import {useSelector} from 'react-redux'
-import {selectLoggedInUser} from "../auth/authSlice"
+import { selectfetchloggedInUser } from '../user/userSlice'
+// import {selectLoggedInUser} from "../auth/authSlice"
 
 const user = {
   name: 'Tom Cook',
@@ -32,7 +33,7 @@ function classNames(...classes) {
 const Navbar = ({children}) => {
 
   const items = useSelector(selectCartItem)
-  const user = useSelector(selectLoggedInUser)
+  const user = useSelector(selectfetchloggedInUser)
   console.log("navbar item--",items);
   return (
     <div className="min-h-full">

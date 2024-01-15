@@ -100,7 +100,7 @@ const handleSort=(e,option)=>{
     
   useEffect(()=>{
     const pagination = {_page:page,_limit:ITEMS_PER_PAGE}
-    dispatch(fetchProductsByFiltersAsync({filter,sort,pagination}));
+    dispatch(fetchProductsByFiltersAsync({filter,sort,pagination,admin:true}));
     // dispatch(fetchAllProductsAsync())
   },[dispatch,filter,sort,page])
 

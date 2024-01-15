@@ -8,9 +8,10 @@ import Navbar from "../navbar/Navbar"
 import { deleteCartItemsAsync, selectCartItem, updateCartItemsAsync } from '../cart/cartSlice'
 import {useDispatch, useSelector} from 'react-redux'
 import { useForm } from "react-hook-form";
-import { selectLoggedInUser, updateUserAsync } from "../auth/authSlice";
+import { selectLoggedInUser } from "../auth/authSlice";
 import { createOrderAsync, selectCurrentOrder } from "../order/orderSlice";
-import { selectfetchloggedInUser } from "../user/userSlice";
+import { selectfetchloggedInUser, updateUserAsync } from "../user/userSlice";
+import { discountedPrice } from "../../app/constants";
 
 
 // const products = [
@@ -76,11 +77,11 @@ const Checkout = () => {
 
   const orderPlaced = useSelector(selectCurrentOrder)
   console.log("orderplsact",orderPlaced);
-  const totalAmount = items.reduce((amount,item)=>item.price*item.quantity+amount,0)
+  const totalAmount = items.reduce((amount,item)=>discountedPrice(item.product.price)*item.quantity+amount,0)
   const totalItems = items.reduce((total,item)=>item.quantity+ total,0)
 
   const handleQuantity=(e,item)=>{
-    dispatch(updateCartItemsAsync({...item,quantity:+e.target.value}))
+    dispatch(updateCartItemsAsync({id:item.id, quantity:+e.target.value}))
   }
 
   const handleRemove=(e,itemId)=>{
@@ -94,7 +95,7 @@ const Checkout = () => {
     handlePayment(e.target.value)
   }
   const handleOrder=(e)=>{
-    const order = {items,totalAmount,totalItems,user,selectedPayment,selectedAddress,status:'pending'}
+    const order = {items,totalAmount,totalItems,user:user.id,selectedPayment,selectedAddress,status:'pending'}
     dispatch(createOrderAsync(order))
     // TODO: redirect to order success page
     // clear cart after order
@@ -377,8 +378,8 @@ const Checkout = () => {
                               <li key={item.id} className="flex py-6">
                                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                   <img
-                                    src={item.images[0]}
-                                    alt={item.title}
+                                    src={item.product.thumbnail}
+                                    alt={item.product.title}
                                     className="h-full w-full object-cover object-center"
                                   />
                                 </div>
@@ -389,9 +390,9 @@ const Checkout = () => {
                                       <h3>
                                         <a href={item.thumbnail}>{item.title}</a>
                                       </h3>
-                                      <p className="ml-4">{item.price}</p>
+                                      <p className="ml-4">${discountedPrice(item.product.price)}</p>
                                     </div>
-                                    <p className="mt-1 text-sm text-gray-500">{item.brand}</p>
+                                    <p className="mt-1 text-sm text-gray-500">{item.product.brand}</p>
                                   </div>
                                   <div className="flex flex-1 items-end justify-between text-sm">
                                     <div className="text-gray-500">

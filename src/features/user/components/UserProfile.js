@@ -1,7 +1,7 @@
 import React ,{useState} from "react";
 import { selectLoggedInUser } from "../../auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { selectfetchloggedInUser, updateUserAsync } from "../userSlice";
+import { selectfetchloggedInUser, updateUserAsync, } from "../userSlice";
 import { useForm } from "react-hook-form";
 
 const UserProfile = () => {

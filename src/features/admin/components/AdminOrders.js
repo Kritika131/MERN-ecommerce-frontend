@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {useDisptch, useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import { ITEMS_PER_PAGE, discountedPrice } from '../../../app/constants'
 import {EyeIcon,PencilIcon,ArrowUpIcon,ArrowDownIcon} from "@heroicons/react/24/outline"
 import { fetchAllOrdersAsync, selectOrders, selectTotalOrders, updateOrderAsync } from '../../order/orderSlice'
@@ -7,7 +7,7 @@ import Pagination from '../../productList/components/Pagination'
 
 const AdminOrders = () => {
   const [page,setPage] = useState(1)
-  const dispatch = useDisptch()
+  const dispatch = useDispatch()
   const orders = useSelector(selectOrders)
   const totalOrders = useSelector(selectTotalOrders)
   const [editableOrderId,setOrderId] = useState(-1)
@@ -46,7 +46,7 @@ const AdminOrders = () => {
     setPage(page)
   }
 
-  const handlSort = (option)=>{
+  const handleSort = (option)=>{
    const sort = {_sort:option.sort,_order:option.order}
    setSort(sort)
   }
@@ -92,10 +92,11 @@ const AdminOrders = () => {
                    <div className="mr-2">
                       <img
                         className="w-6 h-6 rounded-full"
-                        src={item.thumbnail}
+                        src={item.product.thumbnail}
+                        alt={item.product.title}
                       />
                     </div>
-                    <span>{item.title} - #{item.quantity} - ${discountedPrice(item)}</span>
+                    <span>{item.product.title} - #{item.quantity} - ${discountedPrice(item)}</span>
                     </div>
                     
                     )} 
